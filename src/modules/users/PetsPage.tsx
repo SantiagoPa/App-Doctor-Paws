@@ -10,16 +10,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Trash2, Pencil } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useAuthStore } from "../auth/store/auth.store";
 
 const empty = { name: "", species: "perro" as "perro" | "gato", breed: "", age: 1, weight: 5, notes: "" };
 
 const PetsPage = () => {
-  const { user, pets, addPet, removePet, updatePet } = useAuth();
+  const { pets, addPet, removePet, updatePet } = useAuth();
+  const { status} = useAuthStore();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Pet | null>(null);
   const [form, setForm] = useState(empty);
 
-  if (!user) return <Navigate to="/login" replace />;
+  if (status !== "authenticated" ) return <Navigate to="/login" replace />;
 
   const openNew = () => {
     setEditing(null);
@@ -31,7 +33,8 @@ const PetsPage = () => {
     setForm({ name: p.name, species: p.species, breed: p.breed, age: p.age, weight: p.weight, notes: p.notes ?? "" });
     setOpen(true);
   };
-  const submit = (e: React.FormEvent) => {
+
+  const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.name || !form.breed) {
       toast.error("Nombre y raza son obligatorios");
@@ -48,7 +51,7 @@ const PetsPage = () => {
   };
 
   return (
-    <div className="container py-10 space-y-8">
+    <div className="mx-4 py-10 space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl md:text-4xl font-display font-extrabold">Mis Mascotas 🐾</h1>

@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { CatSvg, DogSvg } from "@/components/custom/PetIllustrations";
 import { motion } from "framer-motion";
 import { MessageCircleHeart, PawPrint, Plus, Calendar, Activity, Sparkles } from "lucide-react";
+import { useAuthStore } from "../auth/store/auth.store";
 
 const DashboardPage = () => {
-  const { user, pets } = useAuth();
+  const { pets } = useAuth();
+  const { user } = useAuthStore();
   if (!user) return <Navigate to="/login" replace />;
 
   const dogs = pets.filter((p) => p.species === "perro").length;
@@ -25,7 +27,7 @@ const DashboardPage = () => {
             <Sparkles className="w-3 h-3" /> Tu panel de cuidado
           </div>
           <h1 className="text-3xl md:text-4xl font-display font-extrabold mb-2">
-            Hola, <span className="capitalize">{user.name}</span> 👋
+            Hola, <span className="capitalize">{user.nombre_completo}</span> 👋
           </h1>
           <p className="text-muted-foreground mb-6">
             Aquí tienes todo lo que necesitas para cuidar a tus peluditos.
@@ -112,7 +114,7 @@ const DashboardPage = () => {
           <p className="text-primary-foreground/80 text-sm mb-5">
             Consulta a nuestra IA. Te orienta con los síntomas en segundos.
           </p>
-          <Button variant="outline" asChild>
+          <Button variant="soft" asChild>
             <Link to="/app/chat">Hacer consulta</Link>
           </Button>
         </div>

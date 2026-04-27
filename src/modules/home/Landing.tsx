@@ -191,7 +191,7 @@ const Landing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
-                className="bg-white rounded-3xl p-8 shadow-soft text-center"
+                className="bg-white rounded-3xl p-8 shadow-soft text-center dark:bg-primary-foreground"
               >
                 <div className="text-6xl font-display font-extrabold bg-linear-to-br from-primary to-secondary-deep bg-clip-text text-transparent mb-3">
                   {s.n}

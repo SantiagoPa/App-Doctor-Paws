@@ -44,7 +44,7 @@ const DashboardAdmin = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Stat label="Usuarios" value={a.users.length} icon={Users} to="/admin/users" gradient="bg-gradient-primary" />
+        <Stat label="Usuarios" value={a.users.length} icon={Users} to="/admin/user" gradient="bg-gradient-primary" />
         <Stat label="Planes" value={a.plans.length} icon={Package} to="/admin/planes" gradient="bg-gradient-warm" />
         <Stat label="Veterinarias" value={a.veterinarias.length} icon={Building2} to="/admin/veterinarias" gradient="bg-gradient-sky" />
         <Stat label="Suscripciones activas" value={activeSus} icon={CreditCard} to="/admin/suscripciones" gradient="bg-gradient-primary" />

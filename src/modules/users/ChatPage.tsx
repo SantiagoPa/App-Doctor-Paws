@@ -7,6 +7,7 @@ import { CatSvg, DogSvg } from "@/components/custom/PetIllustrations";
 import { Send, Sparkles, Stethoscope, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuthStore } from "../auth/store/auth.store";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -50,16 +51,14 @@ const mockResponse = (symptom: string, petName: string, species: string): string
 };
 
 const ChatPage = () => {
-    const { user, pets } = useAuth();
+    const { pets } = useAuth();
+    const { user } = useAuthStore();
     const [selectedPet, setSelectedPet] = useState(pets[0]?.id ?? "");
     const [messages, setMessages] = useState<Msg[]>([]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-    }, [messages, loading]);
 
     if (!user) return <Navigate to="/login" replace />;
 
@@ -80,6 +79,10 @@ const ChatPage = () => {
             setLoading(false);
         }, 1200);
     };
+
+    useEffect(() => {
+        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    }, [messages, loading]);
 
     if (pets.length === 0) {
         return (
@@ -162,7 +165,7 @@ const ChatPage = () => {
                                 <div className={`w-10 h-10 rounded-2xl shrink-0 flex items-center justify-center ${m.role === "user" ? "bg-gradient-warm" : "bg-gradient-primary"
                                     }`}>
                                     {m.role === "user" ? (
-                                        <span className="font-bold text-secondary-foreground">{user.name[0].toUpperCase()}</span>
+                                        <span className="font-bold text-secondary-foreground">{user.user[0].toUpperCase()}</span>
                                     ) : (
                                         <Stethoscope className="w-5 h-5 text-primary-foreground" />
                                     )}
