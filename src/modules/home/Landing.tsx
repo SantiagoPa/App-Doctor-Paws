@@ -3,8 +3,12 @@ import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { CatSvg, DogSvg, FloatingPaws, PawPrint } from "@/components/custom/PetIllustrations";
 import { Sparkles, MessageCircleHeart, ShieldCheck, Heart, Stethoscope, Clock } from "lucide-react";
+import { useAuthStore } from "../auth/store/auth.store";
 
 const Landing = () => {
+
+  const { status } = useAuthStore();
+
   return (
     <div className="overflow-hidden">
       {/* HERO */}
@@ -33,7 +37,7 @@ const Landing = () => {
               clara y empática, mientras encuentras un veterinario.
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button  variant="hero" size="lg" asChild>
+              <Button variant="hero" size="lg" asChild>
                 <Link to="/auth/register">
                   <Heart className="w-5 h-5" />
                   Empezar gratis
@@ -217,9 +221,13 @@ const Landing = () => {
               Únete gratis y empieza a cuidar mejor a tu peludito.
             </p>
             <Button variant="secondary" size="lg" asChild className="relative">
-              <Link to="/auth/register">
-                <Heart className="w-5 h-5" /> Crear mi cuenta gratis
-              </Link>
+              {
+                status !== "authenticated" && (
+                  <Link to="/auth/register">
+                    <Heart className="w-5 h-5" /> Crear mi cuenta gratis
+                  </Link>
+                )
+              }
             </Button>
           </div>
         </div>

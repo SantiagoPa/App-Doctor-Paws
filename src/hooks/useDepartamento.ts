@@ -37,8 +37,8 @@ export const useDepartamento = (id_departamento?: string) => {
         }
     }
 
-    useAsync(onGetDepartamentos, (data: ListTerritorialEntity[]) => setDepartamentos(data), () => { }, []);
-    useAsync(onGetMunicipios, (data: ListTerritorialEntity[]) => setMunicipios(data), () => { }, [id_departamento]);
+    useAsync<ListTerritorialEntity[]>(onGetDepartamentos, (data) => setDepartamentos(data), () => { }, []);
+    useAsync<ListTerritorialEntity[]>(onGetMunicipios, (data) => setMunicipios(data), () => { }, [id_departamento]);
 
 
     return { departamentos, municipios, isLoading };

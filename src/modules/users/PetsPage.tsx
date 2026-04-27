@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Navigate } from "react-router";
 import { useAuth, type Pet } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,18 +9,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Trash2, Pencil } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { useAuthStore } from "../auth/store/auth.store";
 
 const empty = { name: "", species: "perro" as "perro" | "gato", breed: "", age: 1, weight: 5, notes: "" };
 
 const PetsPage = () => {
   const { pets, addPet, removePet, updatePet } = useAuth();
-  const { status} = useAuthStore();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Pet | null>(null);
   const [form, setForm] = useState(empty);
 
-  if (status !== "authenticated" ) return <Navigate to="/login" replace />;
 
   const openNew = () => {
     setEditing(null);
