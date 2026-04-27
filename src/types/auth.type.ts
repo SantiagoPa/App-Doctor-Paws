@@ -1,9 +1,4 @@
 
-export type LoginForm = {
-    correo: string;
-    password: string;
-}
-
 export type UserRoles =  "USER" | "ADMIN" | "SUPER_ADMIN"
 export interface User {
     id: string;
@@ -23,7 +18,7 @@ export interface LoginUser {
     user: string;
     correo: string;
     celular: string;
-    roles: string;
+    roles: UserRoles;
     municipio: string;
     departamento: string;
     fecha_registro: Date;
