@@ -41,9 +41,9 @@ export const PublicPrivateInterceptor = () => {
 
     doctorPawsApi.interceptors.response.use(
         (response) => {
-            if (import.meta.env.DEV) {
-                console.log("response", response.data);
-            }
+            // if (import.meta.env.DEV) {
+            //     console.log("response", response.data);
+            // }
             return response;
         },
         (error) => {
@@ -63,11 +63,9 @@ export const PublicPrivateInterceptor = () => {
                 toast.error("Error conexion rechazada - error de conexion");
             }
 
-            console.log({ dataError: error.response.data });
             const msgErrors = error.response.data.message as string | string[];
             if (Array.isArray(msgErrors)) {
                 const showError = msgErrors.reduce((acc, el) => acc += `- ${el}\n`, "");
-                console.log({ showError });
                 toast.error("Error de validación", {
                     description: (
                         <span style={{ whiteSpace: "pre-line" }}>

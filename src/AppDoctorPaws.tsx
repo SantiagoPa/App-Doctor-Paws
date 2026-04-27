@@ -1,20 +1,38 @@
 
 import { RouterProvider } from 'react-router';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner"
 
 import { appRouter } from './router/app.router';
 import { AuthProvider } from './context/AuthContext';
 import { TooltipProvider } from './components/ui/tooltip';
 import { AdminProvider } from './context/AdminContext';
-import { useVerifyToken } from './hooks/useVerifyToken';
+import type { PropsWithChildren } from 'react';
 import { LayoutLoader } from './components/custom/Loader';
+import { useAuthStore } from './modules/auth/store/auth.store';
 
 const queryClient = new QueryClient();
 
+
+const CheckAuthProvider = ({ children }: PropsWithChildren) => {
+
+  const { checkAuth } = useAuthStore();
+
+  const { isLoading } = useQuery({
+    queryKey: ["Auth"],
+    queryFn: checkAuth,
+    retry: false,
+    refetchInterval: 1000 * 60 * 1.5,
+    refetchOnWindowFocus: true,
+  });
+
+  return <LayoutLoader isLoading={isLoading} fullScreen>{children}</LayoutLoader>
+}
+
+
 export function App() {
 
-  const { isLoading } = useVerifyToken();
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -22,9 +40,11 @@ export function App() {
       <TooltipProvider>
         <AuthProvider>
           <AdminProvider>
-            <LayoutLoader isLoading={isLoading} fullScreen >
+
+            <CheckAuthProvider>
               <RouterProvider router={appRouter} />
-            </LayoutLoader>
+            </CheckAuthProvider>
+
           </AdminProvider>
         </AuthProvider>
       </TooltipProvider>

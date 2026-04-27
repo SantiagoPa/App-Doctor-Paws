@@ -6,8 +6,7 @@ import { useAuthStore } from "@/modules/auth/store/auth.store";
 
 export const AppHeader = () => {
 
-    //   const { user, logout } = useAuth();
-    const { user, status,  logout } = useAuthStore();
+    const { user, status, logout, isAdmin } = useAuthStore();
     const location = useLocation();
     const nav = useNavigate();
 
@@ -15,9 +14,8 @@ export const AppHeader = () => {
         { to: "/app", label: "Dashboard", icon: LayoutDashboard },
         { to: "/app/mascotas", label: "Mis Mascotas", icon: PawPrint },
         { to: "/app/chat", label: "Consulta IA", icon: MessageCircleHeart },
-        { to: "/admin", label: "Dashboard Admin", icon: LayoutDashboard },
     ];
-
+    console.log({ isAdmin: isAdmin() });
     return (
         <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50 mx-2">
             <div className="container flex items-center justify-between h-16">
@@ -45,7 +43,6 @@ export const AppHeader = () => {
                                             active
                                                 ? "bg-primary/15 text-primary-deep"
                                                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                                            l.to === "/admin" ? "text-dark bg-secondary-deep" : ""
                                         )}
                                     >
                                         <l.icon className="w-4 h-4" />
@@ -53,6 +50,20 @@ export const AppHeader = () => {
                                     </Link>
                                 );
                             })}
+                            {
+                                isAdmin() && (
+                                    <Link
+                                        to={"/admin"}
+                                        className={cn(
+                                            "flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-medium transition-smooth",
+                                            "text-dark bg-secondary-deep"
+                                        )}
+                                    >
+                                        <LayoutDashboard className="w-4 h-4" />
+                                        Dashboard Admin
+                                    </Link>
+                                )
+                            }
                         </nav>
                         <div className="flex items-center gap-3">
                             <div className="hidden sm:block text-right">

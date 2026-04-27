@@ -4,13 +4,14 @@ export type LoginForm = {
     password: string;
 }
 
+export type UserRoles =  "USER" | "ADMIN" | "SUPER_ADMIN"
 export interface User {
     id: string;
     nombre_completo: string;
     user: string;
     correo: string;
     celular: string;
-    roles: string;
+    roles: UserRoles;
     municipio: string;
     departamento: string;
     fecha_registro: Date;
@@ -31,7 +32,7 @@ export interface LoginUser {
 
 
 export interface VerifyToken {
-    user:  User;
+    user:  UserVerify;
     token: string;
 }
 

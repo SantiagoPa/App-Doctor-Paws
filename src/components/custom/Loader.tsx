@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PawPrint, Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 type LoaderProps = {
     /** Mensaje opcional debajo del loader */
@@ -118,7 +118,7 @@ const Loader = ({ message = "Cargando...", size = "md", fullScreen = false, isLo
     );
 };
 
-type LayoutLoader = LoaderProps & { children: ReactElement }
+type LayoutLoader = LoaderProps & { children: ReactElement | ReactNode }
 
 export const LayoutLoader = ({ children, ...props }: LayoutLoader) => {
     return (
