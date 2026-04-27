@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router';
 import Layout from '@/components/custom/Layout';
+import { AdminRoute, AuthenticatedRoute, NotAuthenticatedRoute } from '@/components/routes/ProtectedRoute';
 
 const LandingLazy = lazy(() => import('@/modules/home/Landing'));
 
@@ -40,7 +41,10 @@ export const appRouter = createBrowserRouter([
     // Auth Routes
     {
         path: '/auth',
-        element: <Layout />,
+        element: (
+            <NotAuthenticatedRoute>
+                <Layout />,
+            </NotAuthenticatedRoute>),
         children: [
             {
                 index: true,
@@ -59,7 +63,11 @@ export const appRouter = createBrowserRouter([
     // Auth users
     {
         path: "/app",
-        element: <Layout />,
+        element: (
+            <AuthenticatedRoute>
+                <Layout />
+            </AuthenticatedRoute>
+        ),
         children: [
             {
                 index: true,
@@ -78,7 +86,11 @@ export const appRouter = createBrowserRouter([
     // Admin Routes
     {
         path: '/admin',
-        element: <LayoutAdminLazy />,
+        element: (
+            <AdminRoute>
+                <LayoutAdminLazy />
+            </AdminRoute>
+        ),
         children: [
             {
                 index: true,

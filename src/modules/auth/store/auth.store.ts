@@ -13,7 +13,7 @@ type AuthStore = {
     status: "not-authenticated" | "authenticated" | "authenticathing"
     user: User | null;
     access_token: string | null;
-    
+
     //getters
     isAdmin: () => boolean;
 
@@ -45,11 +45,15 @@ const storeApi: StateCreator<AuthStore> = (set, get) => ({
         set({ status: "authenticated", access_token: token, user });
     },
 
-    logout: () => set({
-        status: "not-authenticated",
-        access_token: null,
-        user: null,
-    }),
+    logout: () => {
+        localStorage.clear()
+        sessionStorage.clear()
+        set({
+            status: "not-authenticated",
+            access_token: null,
+            user: null,
+        })
+    },
 
     checkAuth: async () => {
         try {

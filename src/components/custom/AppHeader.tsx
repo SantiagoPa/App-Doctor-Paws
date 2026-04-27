@@ -4,18 +4,18 @@ import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 
+const links = [
+    { to: "/app", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/app/mascotas", label: "Mis Mascotas", icon: PawPrint },
+    { to: "/app/chat", label: "Consulta IA", icon: MessageCircleHeart },
+];
+
 export const AppHeader = () => {
 
     const { user, status, logout, isAdmin } = useAuthStore();
     const location = useLocation();
     const nav = useNavigate();
 
-    const links = [
-        { to: "/app", label: "Dashboard", icon: LayoutDashboard },
-        { to: "/app/mascotas", label: "Mis Mascotas", icon: PawPrint },
-        { to: "/app/chat", label: "Consulta IA", icon: MessageCircleHeart },
-    ];
-    console.log({ isAdmin: isAdmin() });
     return (
         <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50 mx-2">
             <div className="container flex items-center justify-between h-16">
