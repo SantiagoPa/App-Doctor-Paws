@@ -21,7 +21,7 @@ const Landing = () => {
             transition={{ duration: 0.7 }}
             className="space-y-6 z-10"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur shadow-soft text-sm font-medium text-primary-deep">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 dark:bg-primary-foreground backdrop-blur shadow-soft text-sm font-medium text-primary-deep">
               <Sparkles className="w-4 h-4" />
               Asistente veterinario con IA
             </div>
@@ -90,7 +90,7 @@ const Landing = () => {
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute top-4 right-12 bg-white rounded-2xl shadow-float p-4 flex items-center gap-3 z-20"
+              className="absolute top-4 right-12 bg-white dark:bg-primary-foreground rounded-2xl shadow-float p-4 flex items-center gap-3 z-20"
             >
               <div className="w-10 h-10 rounded-xl bg-success/20 flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-success" />
@@ -103,7 +103,7 @@ const Landing = () => {
             <motion.div
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 3.5, repeat: Infinity, delay: 1 }}
-              className="absolute bottom-4 left-4 bg-white rounded-2xl shadow-float p-4 flex items-center gap-3 z-20"
+              className="absolute bottom-4 left-4 bg-white dark:bg-primary-foreground rounded-2xl shadow-float p-4 flex items-center gap-3 z-20"
             >
               <div className="w-10 h-10 rounded-xl bg-secondary/40 flex items-center justify-center">
                 <MessageCircleHeart className="w-5 h-5 text-secondary-deep" />
@@ -150,7 +150,7 @@ const Landing = () => {
               },
               {
                 icon: Clock,
-                title: "Disponible siempre",
+                title: "Disponible 24/7",
                 desc: "A las 3 a.m. tu mascota no se siente bien. Estamos aquí para orientarte.",
                 bg: "bg-gradient-peach",
                 color: "text-secondary-foreground",

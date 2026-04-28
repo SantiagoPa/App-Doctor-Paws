@@ -10,6 +10,8 @@ const AuthPageLazy = lazy(() => import('@/modules/auth/AuthPage'));
 // USER
 const DashboardPageLazy = lazy(() => import('@/modules/users/DashboardPage'));
 const PetsPageLazy = lazy(() => import('@/modules/users/PetsPage'));
+const LayoutPetsLazy = lazy(() => import('@/modules/users/views/pets/layout/LayoutPets'));
+const PetPageLazy = lazy(() => import('@/modules/users/views/pets/PetPage'));
 const ChatPageLazy = lazy(() => import('@/modules/users/ChatPage'));
 
 // ADMIN
@@ -75,7 +77,19 @@ export const appRouter = createBrowserRouter([
             },
             {
                 path: "mascotas",
-                element: <PetsPageLazy />
+                element: (
+                    <LayoutPetsLazy />
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: <PetsPageLazy />
+                    },
+                    {
+                        path: ":id",
+                        element: <PetPageLazy />
+                    }
+                ]
             },
             {
                 path: "chat",

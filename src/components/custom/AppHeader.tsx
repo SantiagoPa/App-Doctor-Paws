@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 
 const links = [
-    { to: "/app", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/app", label: "Resumen", icon: LayoutDashboard },
     { to: "/app/mascotas", label: "Mis Mascotas", icon: PawPrint },
     { to: "/app/chat", label: "Consulta IA", icon: MessageCircleHeart },
 ];

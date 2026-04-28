@@ -1,13 +1,13 @@
 
 import { motion } from 'framer-motion';
 import { Stethoscope } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import * as z from 'zod';
-import { useAuthStore } from '../store/auth.store';
 import { useApiCall } from '@/hooks/useApiCall';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { LoginUser } from '@/types/auth.type';
+
+
 import { onDynamicMethod } from '@/services/dynamic.service';
 import { toast } from 'sonner';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -18,6 +18,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@/components/ui/combobox';
 import { useDepartamento, type ListTerritorialEntity } from '@/hooks/useDepartamento';
+import type { Pet } from '@/types/pet.type';
 
 const formSchema = z.object({
     "nombre_completo": z.string().min(6, "debe tener al menos 6 caracteres").nonempty("El nombre_completo es requerido"),
@@ -40,8 +41,6 @@ const formSchema = z.object({
 
 export const RegisterForm = () => {
 
-    const navigate = useNavigate();
-    const { login } = useAuthStore();
     const { callEndpoint, isLoading } = useApiCall();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -65,17 +64,14 @@ export const RegisterForm = () => {
     const { departamentos, municipios, isLoading: isLoadingTerritorialEntity } = useDepartamento(form.watch("departamento"))
 
     const onSubmit = async (payload: z.infer<typeof formSchema>) => {
-        console.log({ payload })
-        const { result, status } = await callEndpoint<LoginUser>(onDynamicMethod({
+        const { result, status } = await callEndpoint<Pet>(onDynamicMethod({
             method: "POST",
             endpoint: "/auth/register",
             payload: { ...payload }
         }));
         if (status === 201 && result) {
-            const { access_token, ...user } = result;
-            login({ token: access_token, user });
+            console.log({result})
             toast.success("¡Cuenta creada! 🎉");
-            navigate("/app");
         }
     }
 

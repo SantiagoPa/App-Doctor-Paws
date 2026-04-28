@@ -1,18 +1,17 @@
-import { Link, Navigate } from "react-router";
-import { useAuth } from "@/context/AuthContext";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { CatSvg, DogSvg } from "@/components/custom/PetIllustrations";
 import { motion } from "framer-motion";
 import { MessageCircleHeart, PawPrint, Plus, Calendar, Activity, Sparkles } from "lucide-react";
 import { useAuthStore } from "../auth/store/auth.store";
+import { usePets } from "./views/pets/hooks/usePets";
 
 const DashboardPage = () => {
-  const { pets } = useAuth();
   const { user } = useAuthStore();
-  if (!user) return <Navigate to="/login" replace />;
+  const { data: pets } = usePets();
 
-  const dogs = pets.filter((p) => p.species === "perro").length;
-  const cats = pets.filter((p) => p.species === "gato").length;
+  const dogs = pets?.filter((p) => p.especie === "PERRO").length;
+  const cats = pets?.filter((p) => p.especie === "GATO").length;
 
   return (
     <div className="py-10 space-y-8 mx-10">
@@ -27,7 +26,7 @@ const DashboardPage = () => {
             <Sparkles className="w-3 h-3" /> Tu panel de cuidado
           </div>
           <h1 className="text-3xl md:text-4xl font-display font-extrabold mb-2">
-            Hola, <span className="capitalize">{user.nombre_completo}</span> 👋
+            Hola, <span className="capitalize">{user?.nombre_completo}</span> 👋
           </h1>
           <p className="text-muted-foreground mb-6">
             Aquí tienes todo lo que necesitas para cuidar a tus peluditos.
@@ -50,7 +49,7 @@ const DashboardPage = () => {
       {/* Stats */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Mascotas", value: pets.length, icon: PawPrint, bg: "bg-gradient-sky", color: "text-primary-deep" },
+          { label: "Mascotas", value: pets?.length, icon: PawPrint, bg: "bg-gradient-sky", color: "text-primary-deep" },
           { label: "Perritos", value: dogs, icon: PawPrint, bg: "bg-gradient-warm", color: "text-secondary-foreground" },
           { label: "Gatitos", value: cats, icon: PawPrint, bg: "bg-gradient-peach", color: "text-secondary-foreground" },
           { label: "Consultas", value: 0, icon: Activity, bg: "bg-gradient-primary", color: "text-primary-foreground" },
@@ -80,7 +79,7 @@ const DashboardPage = () => {
               <Link to="/app/mascotas">Ver todas →</Link>
             </Button>
           </div>
-          {pets.length === 0 ? (
+          {pets?.length === 0 ? (
             <div className="text-center py-10">
               <div className="w-20 h-20 mx-auto mb-4">
                 <DogSvg className="w-full h-full opacity-50" />
@@ -92,14 +91,14 @@ const DashboardPage = () => {
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 gap-3">
-              {pets.slice(0, 4).map((p) => (
+              {pets?.slice(0, 4).map((p) => (
                 <div key={p.id} className="flex items-center gap-4 p-4 rounded-2xl bg-muted/40 hover:bg-muted transition-smooth">
                   <div className="w-14 h-14 shrink-0">
-                    {p.species === "perro" ? <DogSvg className="w-full h-full" /> : <CatSvg className="w-full h-full" />}
+                    {p.especie === "PERRO" ? <DogSvg className="w-full h-full" /> : <CatSvg className="w-full h-full" />}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-bold truncate">{p.name}</p>
-                    <p className="text-xs text-muted-foreground capitalize">{p.breed} · {p.age} años</p>
+                    <p className="font-bold truncate">{p.nombre}</p>
+                    <p className="text-xs text-muted-foreground capitalize">{p.raza} · {p.edad_aproximada} años</p>
                   </div>
                 </div>
               ))}

@@ -6,7 +6,7 @@ export const VisualSidePets = () => {
     return (
         <div className="hidden lg:flex items-center justify-center p-12 relative" >
             <div className="relative w-full max-w-md aspect-square">
-                <div className="absolute inset-8 rounded-full bg-white/40 backdrop-blur" />
+                <div className="absolute inset-8 rounded-full bg-white/40 dark:bg-primary-foreground backdrop-blur" />
                 <motion.div
                     animate={{ y: [0, -15, 0] }}
                     transition={{ duration: 4, repeat: Infinity }}
