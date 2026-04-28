@@ -10,6 +10,8 @@ import { LayoutLoader } from "@/components/custom/Loader";
 import { useChat } from "./views/chat/hooks/useChat";
 import { NotPetsInfo } from "./views/chat/components/NotPetsInfo";
 import { HeaderChat } from "./views/chat/components/HeaderChat";
+import { useConsultas } from "./views/chat/hooks/useConsultas";
+import { useQueryUniq } from "./views/chat/hooks/useQueryUniq";
 
 
 const SUGGESTED = [
@@ -23,16 +25,22 @@ const ChatPage = () => {
 
     const { user } = useAuthStore();
     const { data: pets, isLoading } = usePets();
+    const { data: queries, mutation } = useConsultas();
+    const { data: query } = useQueryUniq(queries ? queries[0]?.id : undefined);
 
-    const { selectedPet, scrollRef, messages, pet, input, loading, onSelectPet, send, handleInputChange } = useChat(pets ?? []);
-
+    const { selectedPet, scrollRef, messages, pet, input, loading, onSelectPet, send, handleInputChange } = useChat({
+        pets,
+        queries,
+        query: query,
+        mutationCreateQuery: mutation.mutateAsync
+    });
 
     if (pets?.length === 0) {
         return (
             <NotPetsInfo />
         );
     }
-
+    
     return (
         <LayoutLoader isLoading={isLoading}>
             <div className="py-6 mx-5 lg:py-8 flex flex-col justify-center">
@@ -42,7 +50,7 @@ const ChatPage = () => {
                 {/* Chat area */}
                 <div className="bg-card rounded-xl shadow-card border border-border/50 overflow-hidden flex flex-col h-[calc(100vh-22rem)] min-h-112.5">
                     <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
-                        {messages.length === 0 ? (
+                        {!messages || messages?.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center text-center">
                                 <div className="flex gap-3 mb-2 mt-10">
                                     <div className="w-20 h-20"><DogSvg className="w-full h-full animate-bounce-soft" /></div>
@@ -66,26 +74,26 @@ const ChatPage = () => {
                                 </div>
                             </div>
                         ) : (
-                            messages.map((m, i) => (
+                            messages?.map((m, i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className={`flex gap-3 ${m.role === "user" ? "flex-row-reverse" : ""}`}
+                                    className={`flex gap-3 ${m.rol === "USUARIO" ? "flex-row-reverse" : ""}`}
                                 >
-                                    <div className={`w-10 h-10 rounded-2xl shrink-0 flex items-center justify-center ${m.role === "user" ? "bg-gradient-warm" : "bg-gradient-primary"
+                                    <div className={`w-10 h-10 rounded-2xl shrink-0 flex items-center justify-center ${m.rol === "USUARIO" ? "bg-gradient-warm" : "bg-gradient-primary"
                                         }`}>
-                                        {m.role === "user" ? (
+                                        {m.rol === "USUARIO" ? (
                                             <span className="font-bold text-secondary-foreground">{user?.user[0].toUpperCase()}</span>
                                         ) : (
                                             <Stethoscope className="w-5 h-5 text-primary-foreground" />
                                         )}
                                     </div>
-                                    <div className={`max-w-[80%] rounded-3xl px-4 py-3 ${m.role === "user"
+                                    <div className={`max-w-[80%] rounded-3xl px-4 py-3 ${m.rol === "USUARIO"
                                         ? "bg-primary text-primary-foreground rounded-tr-md"
                                         : "bg-muted rounded-tl-md"
                                         }`}>
-                                        <div className="whitespace-pre-wrap text-sm leading-relaxed">{m.content}</div>
+                                        <div className="whitespace-pre-wrap text-sm leading-relaxed">{m.contenido}</div>
                                     </div>
                                 </motion.div>
                             ))

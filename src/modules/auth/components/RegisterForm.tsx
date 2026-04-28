@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Stethoscope } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import * as z from 'zod';
 import { useApiCall } from '@/hooks/useApiCall';
 import { Controller, useForm } from 'react-hook-form';
@@ -18,7 +18,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList } from '@/components/ui/combobox';
 import { useDepartamento, type ListTerritorialEntity } from '@/hooks/useDepartamento';
-import type { Pet } from '@/types/pet.type';
+import { useAuthStore } from '../store/auth.store';
+import type { LoginUser } from '@/types/auth.type';
 
 const formSchema = z.object({
     "nombre_completo": z.string().min(6, "debe tener al menos 6 caracteres").nonempty("El nombre_completo es requerido"),
@@ -41,6 +42,8 @@ const formSchema = z.object({
 
 export const RegisterForm = () => {
 
+    const { login } = useAuthStore();
+    const navigate = useNavigate();
     const { callEndpoint, isLoading } = useApiCall();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -64,13 +67,15 @@ export const RegisterForm = () => {
     const { departamentos, municipios, isLoading: isLoadingTerritorialEntity } = useDepartamento(form.watch("departamento"))
 
     const onSubmit = async (payload: z.infer<typeof formSchema>) => {
-        const { result, status } = await callEndpoint<Pet>(onDynamicMethod({
+        const { result, status } = await callEndpoint<LoginUser>(onDynamicMethod({
             method: "POST",
             endpoint: "/auth/register",
             payload: { ...payload }
         }));
         if (status === 201 && result) {
-            console.log({result})
+            const { access_token, ...user} = result;
+            login({token: result.access_token, user });
+            navigate("/app");
             toast.success("¡Cuenta creada! 🎉");
         }
     }
