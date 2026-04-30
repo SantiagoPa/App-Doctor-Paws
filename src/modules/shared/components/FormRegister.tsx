@@ -41,7 +41,7 @@ export const FormRegister = ({ defaultValues, isEditing, onSubmit }: Props) => {
         }
     });
 
-    const { departamentos, municipios, isLoading: isLoadingTerritorialEntity } = useDepartamento(form.watch("departamento"))
+    const { departamentos, municipios, isLoading: isLoadingTerritorialEntity } = useDepartamento(form.watch("departamento"));
 
 
     return (

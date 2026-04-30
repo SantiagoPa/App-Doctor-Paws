@@ -1,6 +1,6 @@
 
 export interface Plan {
-    id:                  number;
+    id:                  string;
     nombre:              string;
     precio_cop:          string;
     consultas_incluidas: number;

@@ -4,12 +4,11 @@ import { Users, Package, Building2, CreditCard, ShieldCheck, AlertTriangle } fro
 import { AlertEpidemiologica, Stat } from "./views/dashboard/components";
 import { LayoutLoader } from "@/components/custom/Loader";
 
-import { useUsers } from "../shared/hooks/useUsers";
-import { usePlanes } from "../shared/hooks/usePlanes";
-import { useVets } from "../shared/hooks/useVets";
-import { useSuscriptions } from "../shared/hooks/useSuscriptions";
-import { useSuscriptionsVet } from "../shared/hooks/useSuscriptionsVet";
-import { useAlertsEpidemiologica } from "../shared/hooks/useAlertsEpidemiologica";
+import { useUsers } from "../shared/hooks/users";
+import { usePlanes } from "../shared/hooks/planes";
+import { useVets } from "../shared/hooks/vets";
+import { useSuscriptions, useSuscriptionsVet } from "../shared/hooks/suscriptions";
+import { useAlertsEpidemiologica } from "../shared/hooks/alerts-epidemiologicas";
 
 
 

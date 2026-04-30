@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUpdateUserAction, removeUserAction } from "../actions/user";
-import { toggleActiveUserAction } from "../actions/user/toggleActiveUserAction";
 import { toast } from "sonner";
+import { createUpdateUserAction, removeUserAction, toggleActiveUserAction } from "../../actions/user";
 
 
 export const useUser = () => {

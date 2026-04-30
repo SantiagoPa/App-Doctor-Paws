@@ -65,6 +65,7 @@ export function CrudPage<T extends { id: string }, U>({
   onUpdate,
   onRemove,
 }: Props<T, U>) {
+
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<T | null>(null);

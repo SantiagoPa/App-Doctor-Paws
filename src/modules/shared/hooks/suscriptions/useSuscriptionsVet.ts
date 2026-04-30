@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getSuscriptionsVetAction } from "../actions/suscription-vet";
+import { getSuscriptionsVetAction } from "../../actions/suscription-vet";
 
 export const useSuscriptionsVet = () => {
 

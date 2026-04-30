@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getVetsAction } from "../actions/vet"
+import { getVetsAction } from "../../actions/vet";
 
 export const useVets = () => {
 

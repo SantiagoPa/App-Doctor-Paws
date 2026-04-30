@@ -1,77 +1,54 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useAdmin, type Plan } from "@/context/AdminContext";
+// import { useAdmin, type Plan } from "@/context/AdminContext";
 import { Package } from "lucide-react";
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import { CrudPage, Field, Grid2 } from "@/components/custom/admin";
+import { CrudPage } from "@/components/custom/admin";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { FormPlans } from "./views/planes/components/FormPlans";
+import type { Plan } from "@/types/plan.type";
+import type { FormPlansType } from "../shared/schemas/FormPlansSchema";
+import { usePlan, usePlanes } from "../shared/hooks/planes";
 
-const empty: Omit<Plan, "id"> = {
-  name: "", price: 0, interval: "mensual", features: "", status: "activo",
+const empty: FormPlansType = {
+  nombre: "",
+  precio_cop: "0",
+  consultas_incluidas: 0,
+  duracion_dias: 0,
+  descripcion: ""
 };
 
+
 const PlanesPage = () => {
-  const { plans, addPlan, updatePlan, removePlan } = useAdmin();
+  const { data: planes } = usePlanes();
+  const { mutation, deleteMutation } = usePlan()
 
   return (
-    <CrudPage<Plan>
+    <CrudPage<Plan, FormPlansType>
       title="Planes"
       subtitle="Configura los planes de suscripción"
       icon={<Package className="w-5 h-5" />}
-      data={plans}
-      searchKeys={["name", "interval"]}
+      data={planes ?? []}
+      searchKeys={["nombre", "duracion_dias"]}
       columns={[
-        { key: "name", label: "Nombre" },
-        { key: "price", label: "Precio", render: (p) => <span className="font-semibold">${p.price.toFixed(2)}</span> },
-        { key: "interval", label: "Intervalo" },
-        { key: "features", label: "Características", className: "max-w-xs truncate" },
+        { key: "nombre", label: "Nombre" },
+        { key: "descripcion", label: "Descripcion" },
+        { key: "precio_cop", label: "Precio", render: (p) => <span className="font-semibold">{formatCurrency(+p.precio_cop)}</span> },
+        { key: "consultas_incluidas", label: "Consultas Incluidas", render: (p) => <span className="font-semibold">{ p.consultas_incluidas === -1 ? "Ilimitadas": p.consultas_incluidas}</span> },
+        { key: "duracion_dias", label: "Duracion", },
         {
-          key: "status", label: "Estado",
+          key: "activo", label: "Estado",
           render: (p) => (
-            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.status === "activo" ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}>
-              {p.status}
+            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.activo ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}>
+              {p.activo ? "ACTIVO" : "INACTIVO"}
             </span>
           ),
         },
       ]}
       emptyForm={empty}
-      onAdd={addPlan}
-      onUpdate={updatePlan}
-      onRemove={removePlan}
-      renderForm={(form, set) => (
+      onAdd={(payload) => mutation.mutateAsync({ ...payload, id: "new" })}
+      onUpdate={(id, payload) => mutation.mutateAsync({ id, ...payload })}
+      onRemove={(id) => deleteMutation.mutateAsync(id)}
+      renderForm={(form, isEditing, submit) => (
         <>
-          <Grid2>
-            <Field label="Nombre">
-              <Input value={form.name} onChange={(e) => set({ ...form, name: e.target.value })} />
-            </Field>
-            <Field label="Precio (USD)">
-              <Input type="number" step="0.01" value={form.price} onChange={(e) => set({ ...form, price: parseFloat(e.target.value) || 0 })} />
-            </Field>
-          </Grid2>
-          <Grid2>
-            <Field label="Intervalo">
-              <Select value={form.interval} onValueChange={(v: any) => set({ ...form, interval: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mensual">Mensual</SelectItem>
-                  <SelectItem value="anual">Anual</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-            <Field label="Estado">
-              <Select value={form.status} onValueChange={(v: any) => set({ ...form, status: v })}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="activo">Activo</SelectItem>
-                  <SelectItem value="inactivo">Inactivo</SelectItem>
-                </SelectContent>
-              </Select>
-            </Field>
-          </Grid2>
-          <Field label="Características">
-            <Textarea rows={3} value={form.features} onChange={(e) => set({ ...form, features: e.target.value })} />
-          </Field>
+          <FormPlans defaultValues={form} isEditing={isEditing} onSubmit={async (payload) => submit(payload)} />
         </>
       )}
     />

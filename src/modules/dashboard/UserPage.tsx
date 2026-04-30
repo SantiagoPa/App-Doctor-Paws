@@ -2,13 +2,12 @@ import { ToggleLeft, Users } from "lucide-react";
 
 import { CrudPage } from "@/components/custom/admin/CrudPage";
 import { Badge } from "@/components/ui/badge";
-import { useUsers } from "../shared/hooks/useUsers";
 import { LayoutLoader } from "@/components/custom/Loader";
 import type { User } from "@/types/auth.type";
 import { FormRegister } from "../shared/components/FormRegister";
 import type { FormRegisterType } from "../shared/schemas/FormRegisterSchema";
-import { useUser } from "../shared/hooks/useUser";
 import { Button } from "@/components/ui/button";
+import { useUser, useUsers } from "../shared/hooks/users";
 
 
 // type TFormRegister = Omit<FormRegisterType, 'acepta_terminos'> & {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAlertsEpidemiologicaAction } from "../actions/alert-epidemiologica";
+import { getAlertsEpidemiologicaAction } from "../../actions/alert-epidemiologica";
 
 
 export const useAlertsEpidemiologica = () => {
