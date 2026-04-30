@@ -4,11 +4,12 @@ interface Props {
     title?: string;
     description?: string;
     open: boolean;
-    confirmDelete: () => void;
+    confirmAction: () => void;
     onOpenChange: (value: boolean) => void;
+    textConfirm?: string;
 }
 
-export const ConfirmAction = ({ title = "¿Eliminar registro?", description = "Esta acción no se puede deshacer.", open, confirmDelete, onOpenChange }: Props) => {
+export const ConfirmAction = ({ title = "¿Eliminar registro?", description = "Esta acción no se puede deshacer.", textConfirm = "Eliminar", open, confirmAction, onOpenChange }: Props) => {
 
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -22,10 +23,10 @@ export const ConfirmAction = ({ title = "¿Eliminar registro?", description = "E
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                     <AlertDialogAction
-                        onClick={confirmDelete}
+                        onClick={confirmAction}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                        Eliminar
+                        {textConfirm}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

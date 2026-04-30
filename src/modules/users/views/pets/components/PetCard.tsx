@@ -60,7 +60,7 @@ export const PetCard = ({ pet, onEdit }: Props) => {
                 </Button>
             </div>
 
-            <ConfirmAction open={open} onOpenChange={onOpenChange} confirmDelete={()=>onConfirmRemove(pet)} />
+            <ConfirmAction open={open} onOpenChange={onOpenChange} confirmAction={()=>onConfirmRemove(pet)} />
 
         </>
 

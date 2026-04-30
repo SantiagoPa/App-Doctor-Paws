@@ -18,17 +18,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import { toast } from "sonner";
+import { ConfirmAction } from "../ConfirmAction";
 
 export type ColumnDef<T> = {
   key: keyof T | string;
@@ -37,24 +29,29 @@ export type ColumnDef<T> = {
   className?: string;
 };
 
-type Props<T extends { id: string }> = {
+type Props<T extends { id: string }, U> = {
   title: string;
   subtitle?: string;
   icon?: ReactNode;
   data: T[];
   columns: ColumnDef<T>[];
   searchKeys: (keyof T)[];
-  emptyForm: Omit<T, "id">;
+  emptyForm: U;
   renderForm: (
-    data: Omit<T, "id">,
-    setData: (d: Omit<T, "id">) => void,
+    data: U,
+    isEditing: boolean,
+    submit: (form: U) => void,
   ) => ReactNode;
-  onAdd: (item: Omit<T, "id">) => void;
-  onUpdate: (id: string, item: Omit<T, "id">) => void;
+  onAdd: (item: U) => void;
+  onUpdate: (id: string, item: U) => void;
   onRemove: (id: string) => void;
+  renderAction?: (
+    row: T,
+    triggerConfirm: (config: { title: string; description: string; textConfirm: string; onConfirm: () => void }) => void
+  ) => ReactNode;
 };
 
-export function CrudPage<T extends { id: string }>({
+export function CrudPage<T extends { id: string }, U>({
   title,
   subtitle,
   icon,
@@ -63,15 +60,23 @@ export function CrudPage<T extends { id: string }>({
   searchKeys,
   emptyForm,
   renderForm,
+  renderAction,
   onAdd,
   onUpdate,
   onRemove,
-}: Props<T>) {
+}: Props<T, U>) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<T | null>(null);
-  const [form, setForm] = useState<Omit<T, "id">>(emptyForm);
+  const [form, setForm] = useState<U>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const [customAction, setCustomAction] = useState<{
+    title: string;
+    description: string;
+    textConfirm: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
@@ -90,11 +95,11 @@ export function CrudPage<T extends { id: string }>({
   const openEdit = (row: T) => {
     setEditing(row);
     const { id: _, ...rest } = row;
-    setForm(rest as Omit<T, "id">);
+    setForm(rest as U);
     setOpen(true);
   };
 
-  const submit = () => {
+  const submit = (form: U) => {
     if (editing) {
       onUpdate(editing.id, form);
       toast.success("Registro actualizado");
@@ -105,13 +110,13 @@ export function CrudPage<T extends { id: string }>({
     setOpen(false);
   };
 
-  const confirmDelete = () => {
+  const confirmAction = () => {
     if (deleteId) {
       onRemove(deleteId);
       toast.success("Registro eliminado");
       setDeleteId(null);
     }
-  };
+  }
 
   return (
     <div className="space-y-6 animate-fade-up">
@@ -127,7 +132,7 @@ export function CrudPage<T extends { id: string }>({
             {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
-        <Button  onClick={openNew}>
+        <Button onClick={openNew}>
           <Plus className="w-4 h-4" />
           Nuevo
         </Button>
@@ -137,13 +142,13 @@ export function CrudPage<T extends { id: string }>({
         <div className="relative mb-4">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Buscar..."
+            placeholder={`Buscar por: ${searchKeys.join(", ")}`}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-9 rounded-xl"
           />
         </div>
-        <div className="rounded-xl overflow-hidden border border-border/60 bg-background/40">
+        <div className="rounded-md overflow-hidden border border-border/60 bg-background/40">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -186,12 +191,13 @@ export function CrudPage<T extends { id: string }>({
                         <Button
                           size="icon"
                           variant="ghost"
-                          onClick={() => setDeleteId(row.id)}
+                          onClick={() => { setDeleteId(row.id); }}
                           aria-label="Eliminar"
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
+                        {renderAction && renderAction(row, (config) => setCustomAction(config))}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -205,44 +211,38 @@ export function CrudPage<T extends { id: string }>({
         </p>
       </Card>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg">
+      <Dialog modal={false} open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-lg rounded-lg">
           <DialogHeader>
             <DialogTitle className="font-display">
               {editing ? "Editar registro" : "Nuevo registro"}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-2">{renderForm(form, setForm)}</div>
+          <div className="space-y-4 py-2">{renderForm(form, !!editing, submit)}</div>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setOpen(false)}>
+            <Button className="w-full" variant="ghost" onClick={() => setOpen(false)}>
               Cancelar
-            </Button>
-            <Button onClick={submit}>
-              {editing ? "Guardar cambios" : "Crear"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={!!deleteId} onOpenChange={(o) => !o && setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Eliminar registro?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción no se puede deshacer.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Eliminar
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmAction
+        title={"¿Eliminar registro?"}
+        description="Esta acción no se puede deshacer."
+        open={!!deleteId}
+        onOpenChange={(o) => !o && setDeleteId(null)}
+        confirmAction={confirmAction}
+      />
+
+      <ConfirmAction
+        title={customAction?.title ?? ""}
+        description={customAction?.description ?? ""}
+        textConfirm={customAction?.textConfirm ?? ""}
+        open={!!customAction}
+        onOpenChange={(o) => { if (!o) setCustomAction(null); }}
+        confirmAction={() => { customAction?.onConfirm(); setCustomAction(null); }}
+      />
     </div>
   );
 }

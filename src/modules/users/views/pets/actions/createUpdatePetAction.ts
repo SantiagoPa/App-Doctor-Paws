@@ -4,7 +4,6 @@ import doctorPawsApi from "@/api/doctorPawsApi";
 
 export const createUpdatePetAction = async (payload: Pet): Promise<Pet> => {
 
-
     const { id, ...rest } = payload;
     const isCreating = id === "new"
 
