@@ -7,10 +7,10 @@ import { AlertCircle, ArrowLeft, ShieldCheck } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 import { FormPayment } from "./components/FormPayment";
-import { usePayment } from "@/modules/shared/hooks/usePayment";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { ButtonWompi } from "@/components/custom/ButtonWompi";
 import { Activity, useState } from "react";
+import { usePayment } from "@/modules/shared/hooks/payments";
 
 const PlanPage = () => {
 

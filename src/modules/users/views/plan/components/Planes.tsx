@@ -7,9 +7,10 @@ import { LayoutLoader } from '@/components/custom/Loader';
 import { useNavigate } from 'react-router';
 import type { Plan } from '@/types/plan.type';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { useUserPayment } from '@/modules/shared/hooks/useUserPayment';
-import { usePlanes } from '@/modules/shared/hooks/usePlanes';
-import { useSuscriptionByUser } from '@/modules/shared/hooks/useSuscriptionByUser';
+import { useSuscriptionByUser } from '@/modules/shared/hooks/suscriptions';
+import { usePlanes } from '@/modules/shared/hooks/planes';
+import { useUserPayment } from '@/modules/shared/hooks/payments';
+
 
 
 export const Planes = () => {
@@ -25,7 +26,7 @@ export const Planes = () => {
         return planes?.map((plan) => {
             if (!suscription) return;
 
-            if (plan.id === 1) {
+            if (Number(plan.id) === 1) {
                 return {
                     ...plan,
                     icon: Gift,
@@ -37,14 +38,14 @@ export const Planes = () => {
                         "Recordatorios básicos",
                         "Acceso a la comunidad",
                     ],
-                    cta: suscription.plan_id === plan.id ? "Plan Actual" : "Elegir Plan",
+                    cta: suscription.plan_id === +plan.id ? "Plan Actual" : "Elegir Plan",
                     variant: "soft" as const,
                     featured: false,
-                    isCurrentPlan: suscription.plan_id === plan.id
+                    isCurrentPlan: suscription.plan_id === +plan.id
                 }
             }
 
-            if (plan.id === 2) {
+            if (+plan.id === 2) {
                 return {
                     ...plan,
                     icon: Star,
@@ -57,14 +58,14 @@ export const Planes = () => {
                         "Historial veterinario",
                         "Soporte prioritario",
                     ],
-                    cta: suscription.plan_id === plan.id ? "Plan Actual" : "Elegir Mensual",
+                    cta: suscription.plan_id === +plan.id ? "Plan Actual" : "Elegir Mensual",
                     variant: "hero" as const,
                     featured: true,
-                    isCurrentPlan: suscription.plan_id === plan.id
+                    isCurrentPlan: suscription.plan_id === +plan.id
                 }
             }
 
-            if (plan.id === 3) {
+            if (+plan.id === 3) {
                 return {
                     ...plan,
                     icon: Crown,
@@ -77,10 +78,10 @@ export const Planes = () => {
                         // "Reportes mensuales PDF",
                         // "Atención VIP veterinaria",
                     ],
-                    cta: suscription.plan_id === plan.id ? "Plan Actual" : "Elegir Anual",
+                    cta: suscription.plan_id === +plan.id ? "Plan Actual" : "Elegir Anual",
                     variant: "peach" as const,
                     featured: false,
-                    isCurrentPlan: suscription.plan_id === plan.id
+                    isCurrentPlan: suscription.plan_id === +plan.id
                 }
             }
         })

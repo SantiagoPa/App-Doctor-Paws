@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/modules/auth/store/auth.store"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createAttemptPaymentAction, getAttemptPaymentByUserAction } from "../actions/payment";
+import { createAttemptPaymentAction, getAttemptPaymentByUserAction } from "../../actions/payment";
 
 
 export const useUserPayment = () => {
