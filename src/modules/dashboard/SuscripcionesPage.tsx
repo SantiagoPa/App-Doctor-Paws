@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 
 const SuscripcionesPage = () => {
   const { data: suscription } = useSuscriptions();
-  // const clientes = users.filter((u) => u.role === "cliente");
 
   return (
     <CrudPage<Suscription, any>
@@ -21,7 +20,7 @@ const SuscripcionesPage = () => {
       columns={[
         { key: "usuario.nombre_completo", label: "Usuario" },
         {
-          key: "plan.nombre", label: "Plan",
+          key: "plan.nombre", label: "Plan Directorio",
           render: (s) => (<Badge variant={"outline"}>{s.plan.nombre}</Badge>),
         },
         {

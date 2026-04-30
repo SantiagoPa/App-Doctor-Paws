@@ -136,10 +136,14 @@ export function CrudPage<T extends { id: string }, U>({
             {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
           </div>
         </div>
-        <Button onClick={openNew}>
-          <Plus className="w-4 h-4" />
-          Nuevo
-        </Button>
+        {
+          notActions === true ? (null) : (
+            <Button onClick={openNew}>
+              <Plus className="w-4 h-4" />
+              Nuevo
+            </Button>
+          )
+        }
       </div>
 
       <Card className="p-4 bg-gradient-card shadow-card border-border/60">

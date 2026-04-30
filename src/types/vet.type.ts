@@ -1,4 +1,4 @@
-
+export type StatusPlanDirVet = "BASICO" | "DESTACADO" | "PREMIUM";
 export interface Vet {
     id:                  string;
     nombre:              string;
@@ -11,7 +11,7 @@ export interface Vet {
     direccion:           string;
     precio_consulta_min: string;
     precio_consulta_max: string;
-    plan_directorio:     string;
+    plan_directorio:     StatusPlanDirVet;
     google_maps_url:     string | null;
     whatsapp_directo:    string | null;
     logo_url:            string | null;
