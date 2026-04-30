@@ -1,92 +1,45 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useAdmin, type AlertaEpidemiologica } from "@/context/AdminContext";
+
+
+import { CrudPage, } from "@/components/custom/admin";
+import type { AlertEpidemiologica } from "@/types/alert-epidemiologica";
 import { AlertTriangle } from "lucide-react";
-import {
-    Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import { CrudPage, Field, Grid2 } from "@/components/custom/admin";
+import { useAlertsEpidemiologica } from "../shared/hooks/alerts-epidemiologicas";
+import { Badge } from "@/components/ui/badge";
 
-const empty: Omit<AlertaEpidemiologica, "id"> = {
-    title: "", disease: "", species: "ambos", region: "",
-    level: "media", date: new Date().toISOString().slice(0, 10), description: "",
-};
 
-const levelTone = (l: string) =>
-    l === "crítica" ? "bg-destructive/15 text-destructive"
-        : l === "alta" ? "bg-secondary-deep/20 text-secondary-foreground"
-            : l === "media" ? "bg-primary/15 text-primary-deep"
-                : "bg-muted text-muted-foreground";
+
 
 const AlertasPage = () => {
-    const { alertas, addAlerta, updateAlerta, removeAlerta } = useAdmin();
+
+    const { data: alerts } = useAlertsEpidemiologica()
 
     return (
-        <CrudPage<AlertaEpidemiologica>
+        <CrudPage<AlertEpidemiologica, any>
             title="Alertas Epidemiológicas"
             subtitle="Vigilancia sanitaria y brotes"
             icon={<AlertTriangle className="w-5 h-5" />}
-            data={alertas}
-            searchKeys={["title", "disease", "region"]}
+            notActions
+            data={alerts ?? []}
+            searchKeys={["departamento", "municipio", "nivel_alerta"]}
             columns={[
                 { key: "title", label: "Título" },
-                { key: "disease", label: "Enfermedad" },
-                { key: "species", label: "Especie" },
-                { key: "region", label: "Región" },
-                { key: "date", label: "Fecha" },
+                { key: "departamento", label: "Departamento" },
+                { key: "municipio", label: "municipio" },
+                { key: "especie_afectada", label: "Especie Afectada" },
+                { key: "num_casos", label: "Numero de casos" },
                 {
-                    key: "level", label: "Nivel",
-                    render: (a) => <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${levelTone(a.level)}`}>{a.level}</span>,
+                    key: "nivel_alerta", label: "Nivel Alerta",
+                    render: (a) => <Badge variant={["ALTO", "CRITICO"].includes(a.nivel_alerta) ? "destructive" : "secondary"}>{a.nivel_alerta}</Badge>
                 },
+                { key: "periodo_inicio", label: "Periodo Inicio" },
+                { key: "periodo_fin", label: "Periodo Fin" },
+                { key: "condicion", label: "Condicion" },
             ]}
-            emptyForm={empty}
-            onAdd={addAlerta}
-            onUpdate={updateAlerta}
-            onRemove={removeAlerta}
-            renderForm={(form, set) => (
-                <>
-                    <Field label="Título">
-                        <Input value={form.title} onChange={(e) => set({ ...form, title: e.target.value })} />
-                    </Field>
-                    <Grid2>
-                        <Field label="Enfermedad">
-                            <Input value={form.disease} onChange={(e) => set({ ...form, disease: e.target.value })} />
-                        </Field>
-                        <Field label="Especie afectada">
-                            <Select value={form.species} onValueChange={(v: any) => set({ ...form, species: v })}>
-                                <SelectTrigger><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="perro">Perro</SelectItem>
-                                    <SelectItem value="gato">Gato</SelectItem>
-                                    <SelectItem value="ambos">Ambos</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                    </Grid2>
-                    <Grid2>
-                        <Field label="Región">
-                            <Input value={form.region} onChange={(e) => set({ ...form, region: e.target.value })} />
-                        </Field>
-                        <Field label="Nivel">
-                            <Select value={form.level} onValueChange={(v: any) => set({ ...form, level: v })}>
-                                <SelectTrigger><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="baja">Baja</SelectItem>
-                                    <SelectItem value="media">Media</SelectItem>
-                                    <SelectItem value="alta">Alta</SelectItem>
-                                    <SelectItem value="crítica">Crítica</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </Field>
-                    </Grid2>
-                    <Field label="Fecha">
-                        <Input type="date" value={form.date} onChange={(e) => set({ ...form, date: e.target.value })} />
-                    </Field>
-                    <Field label="Descripción">
-                        <Textarea rows={3} value={form.description} onChange={(e) => set({ ...form, description: e.target.value })} />
-                    </Field>
-                </>
-            )}
+            emptyForm={undefined}
+            onAdd={() => null}
+            onUpdate={() => null}
+            onRemove={() => null}
+            renderForm={() => null}
         />
     );
 };

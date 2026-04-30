@@ -6,6 +6,7 @@ export type LevelAlert = "BAJO" | "MEDIO" | "ALTO" | "CRITICO";
 
 export interface AlertEpidemiologica {
     id: string;
+    title: string;
     condicion: string;
     departamento: string;
     municipio: string;
