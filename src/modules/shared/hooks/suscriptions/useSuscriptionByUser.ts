@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { getSuscriptionByUserAction } from "../actions/suscription";
+import { getSuscriptionByUserAction } from "../../actions/suscription";
 
 
 
