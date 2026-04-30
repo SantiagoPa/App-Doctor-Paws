@@ -1,82 +1,93 @@
-import { Card } from "@/components/ui/card";
-import { useAdmin } from "@/context/AdminContext";
-import { Users, Package, Building2, CreditCard, ShieldCheck, AlertTriangle, TrendingUp } from "lucide-react";
-import { Link } from "react-router";
+import { useMemo } from "react";
+import { Users, Package, Building2, CreditCard, ShieldCheck, AlertTriangle } from "lucide-react";
 
-const Stat = ({
-  label,
-  value,
-  icon: Icon,
-  to,
-  gradient,
-}: {
-  label: string;
-  value: number | string;
-  icon: any;
-  to: string;
-  gradient: string;
-}) => (
-  <Link to={to}>
-    <Card className="p-5 bg-gradient-card shadow-card hover:shadow-float transition-smooth border-border/60 hover:-translate-y-1 group">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">{label}</p>
-          <p className="font-display font-bold text-3xl mt-2">{value}</p>
-        </div>
-        <div className={`w-12 h-12 rounded-2xl ${gradient} flex items-center justify-center shadow-soft group-hover:scale-110 transition-bounce`}>
-          <Icon className="w-5 h-5 text-primary-foreground" />
-        </div>
-      </div>
-    </Card>
-  </Link>
-);
+import { AlertEpidemiologica, Stat } from "./views/dashboard/components";
+import { LayoutLoader } from "@/components/custom/Loader";
+
+import { useUsers } from "../shared/hooks/useUsers";
+import { usePlanes } from "../shared/hooks/usePlanes";
+import { useVets } from "../shared/hooks/useVets";
+import { useSuscriptions } from "../shared/hooks/useSuscriptions";
+import { useSuscriptionsVet } from "../shared/hooks/useSuscriptionsVet";
+import { useAlertsEpidemiologica } from "../shared/hooks/useAlertsEpidemiologica";
+
+
 
 const DashboardAdmin = () => {
-  const a = useAdmin();
-  const activeAlerts = a.alertas.filter((x) => x.level === "alta" || x.level === "crítica").length;
-  const activeSus = a.suscripciones.filter((s) => s.status === "activa").length + a.suscripcionesVet.filter((s) => s.status === "activa").length;
+  const { data: users, isLoading: isLoadingUsers } = useUsers();
+  const { data: planes, isLoading: isLoadingPlanes } = usePlanes();
+  const { data: vets, isLoading: isLoadingVets } = useVets();
+  const { data: suscriptions, isLoading: isLoadingSuscriptions } = useSuscriptions();
+  const { data: suscriptionsVet, isLoading: isLoadingSuscriptionsVet } = useSuscriptionsVet();
+  const { data: alert, isLoading: isLoadingAlert } = useAlertsEpidemiologica();
+  // const activeAlerts = alertas.filter((x) => x.level === "alta" || x.level === "crítica").length;
+  // const activeSus = suscripciones.filter((s) => s.status === "activa").length + suscripcionesVet.filter((s) => s.status === "activa").length;
+
+  const activeSuscription = useMemo(() => {
+    if (!suscriptions) return [];
+    return suscriptions.filter(s => s.estado === "ACTIVA");
+  }, [suscriptions]);
+
+  // const activeSuscription = useMemo(() => {
+  //   if (!suscriptions) return [];
+  //   return suscriptions.filter(s => s.estado === "ACTIVA");
+  // }, [suscriptions]);
 
   return (
-    <div className="space-y-6 animate-fade-up">
-      <div>
-        <h2 className="font-display font-bold text-3xl">Resumen general</h2>
-        <p className="text-muted-foreground">Vista rápida del estado de la plataforma</p>
-      </div>
+    <LayoutLoader fullScreen isLoading={isLoadingUsers || isLoadingPlanes || isLoadingVets || isLoadingSuscriptions || isLoadingSuscriptionsVet || isLoadingAlert}>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <Stat label="Usuarios" value={a.users.length} icon={Users} to="/admin/user" gradient="bg-gradient-primary" />
-        <Stat label="Planes" value={a.plans.length} icon={Package} to="/admin/planes" gradient="bg-gradient-warm" />
-        <Stat label="Veterinarias" value={a.veterinarias.length} icon={Building2} to="/admin/veterinarias" gradient="bg-gradient-sky" />
-        <Stat label="Suscripciones activas" value={activeSus} icon={CreditCard} to="/admin/suscripciones" gradient="bg-gradient-primary" />
-        <Stat label="Susc. veterinarias" value={a.suscripcionesVet.length} icon={ShieldCheck} to="/admin/suscripciones-vet" gradient="bg-gradient-peach" />
-        <Stat label="Alertas críticas" value={activeAlerts} icon={AlertTriangle} to="/admin/alertas" gradient="bg-gradient-warm" />
-      </div>
+      <div className="space-y-6 animate-fade-up">
+        <div>
+          <h2 className="font-display font-bold text-3xl">Resumen general</h2>
+          <p className="text-muted-foreground">Vista rápida del estado de la plataforma</p>
+        </div>
 
-      <Card className="p-6 bg-gradient-card shadow-card border-border/60">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-primary-deep" />
-          <h3 className="font-display font-bold text-xl">Últimas alertas epidemiológicas</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {
+            users && (
+              <Stat label="Usuarios" value={users.length} icon={Users} to="/admin/user" gradient="bg-gradient-primary" />
+            )
+          }
+
+          {
+            planes && (
+              <Stat label="Planes" value={planes.length} icon={Package} to="/admin/planes" gradient="bg-gradient-warm" />
+            )
+          }
+
+          {
+            vets && (
+              <Stat label="Veterinarias" value={vets.length} icon={Building2} to="/admin/veterinarias" gradient="bg-gradient-sky" />
+            )
+          }
+
+          {
+            activeSuscription && (
+              <Stat label="Suscripciones activas" value={activeSuscription.length} icon={CreditCard} to="/admin/suscripciones" gradient="bg-gradient-primary" />
+            )
+          }
+
+          {
+            suscriptionsVet && (
+              <Stat label="Suscripciones veterinarias" value={suscriptionsVet.length} icon={ShieldCheck} to="/admin/suscripciones-vet" gradient="bg-gradient-peach" />
+            )
+          }
+
+          {
+            alert && (
+              <Stat label="Alertas" value={alert.length} icon={AlertTriangle} to="/admin/alertas" gradient="bg-gradient-warm" />
+            )
+          }
+
         </div>
-        <div className="space-y-2">
-          {a.alertas.slice(0, 5).map((al) => (
-            <div key={al.id} className="flex items-center justify-between p-3 rounded-xl bg-background/60 border border-border/50">
-              <div>
-                <p className="font-semibold text-sm">{al.title}</p>
-                <p className="text-xs text-muted-foreground">{al.region} · {al.date}</p>
-              </div>
-              <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-                al.level === "crítica" ? "bg-destructive/15 text-destructive" :
-                al.level === "alta" ? "bg-secondary-deep/20 text-secondary-foreground" :
-                al.level === "media" ? "bg-primary/15 text-primary-deep" :
-                "bg-muted text-muted-foreground"
-              }`}>
-                {al.level.toUpperCase()}
-              </span>
-            </div>
-          ))}
-        </div>
-      </Card>
-    </div>
+        {
+          alert && (
+            <AlertEpidemiologica alert={alert} />
+          )
+        }
+      </div>
+    </LayoutLoader>
+
   );
 };
 

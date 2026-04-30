@@ -22,6 +22,7 @@ const ChatPageLazy = lazy(() => import('@/modules/users/ChatPage'));
 const LayoutAdminLazy = lazy(() => import('@/components/custom/AdminLayout'));
 const DashboardAdminLazy = lazy(() => import('@/modules/dashboard/DashboardAdmin'));
 const UserPageLazy = lazy(() => import('@/modules/dashboard/UserPage'));
+const AdminPlanesPageLazy = lazy(() => import('@/modules/dashboard/PlanesPage'));
 const SuscripcionesPageLazy = lazy(() => import('@/modules/dashboard/SuscripcionesPage'));
 const SuscripcionesVetPageLazy = lazy(() => import('@/modules/dashboard/SuscripcionesVetPage'));
 const VeterinariasPageLazy = lazy(() => import('@/modules/dashboard/VeterinariasPage'));
@@ -136,23 +137,23 @@ export const appRouter = createBrowserRouter([
                 element: <UserPageLazy />,
             },
             {
-                path: "/admin/planes",
-                element: <PlanesPageLazy />
+                path: "planes",
+                element: <AdminPlanesPageLazy />
             },
             {
-                path: "/admin/veterinarias",
+                path: "veterinarias",
                 element: <VeterinariasPageLazy />
             },
             {
-                path: "/admin/suscripciones",
+                path: "suscripciones",
                 element: <SuscripcionesPageLazy />
             },
             {
-                path: "/admin/suscripciones-vet",
+                path: "suscripciones-vet",
                 element: <SuscripcionesVetPageLazy />
             },
             {
-                path: "/admin/alertas",
+                path: "alertas",
                 element: <AlertasPageLazy />
             },
         ],

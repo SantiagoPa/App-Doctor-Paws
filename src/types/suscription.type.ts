@@ -1,7 +1,9 @@
 
+
+export type SuscriptionStatus = "ACTIVA" | "VENCIDA" | "CANCELADA" | "PENDIENTE_PAGO" | "COMPLETADA";
 export interface Suscription {
     id: string;
-    estado: string;
+    estado: SuscriptionStatus;
     fecha_inicio: Date;
     fecha_vencimiento: Date;
     consultas_usadas: number;

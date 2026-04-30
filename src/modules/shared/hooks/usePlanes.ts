@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPlanesActions } from "../actions/getPlanesActions";
+import { getPlanesActions } from "../actions/plan";
 
 
 export const usePlanes = () => {

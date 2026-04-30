@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAttemptsPaymentAction } from "../actions/getAttemptsPaymentAction";
+import { getAttemptsPaymentAction } from "../actions/payment";
 
 export const usePayment = (id: string) => {
 

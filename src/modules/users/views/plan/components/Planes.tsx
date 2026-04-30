@@ -1,21 +1,21 @@
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Check, Crown, Gift, Star } from "lucide-react"
-import { usePlanes } from '../hooks/usePlanes';
 import { useMemo } from 'react';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { useSuscription } from '@/modules/shared/hooks/useSuscription';
 import { LayoutLoader } from '@/components/custom/Loader';
 import { useNavigate } from 'react-router';
 import type { Plan } from '@/types/plan.type';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useUserPayment } from '@/modules/shared/hooks/useUserPayment';
+import { usePlanes } from '@/modules/shared/hooks/usePlanes';
+import { useSuscriptionByUser } from '@/modules/shared/hooks/useSuscriptionByUser';
 
 
 export const Planes = () => {
 
     const { user } = useAuthStore();
-    const { data: suscription, isLoading: isLoadingSuscription } = useSuscription();
+    const { data: suscription, isLoading: isLoadingSuscription } = useSuscriptionByUser();
     const { data: planes, isLoading: isLoadingPlan } = usePlanes();
     const { data: payment, mutation } = useUserPayment();
 
