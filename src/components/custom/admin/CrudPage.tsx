@@ -21,6 +21,7 @@ import {
 
 import { toast } from "sonner";
 import { ConfirmAction } from "../ConfirmAction";
+import { getNestedValue } from "@/utils";
 
 export type ColumnDef<T> = {
   key: keyof T | string;
@@ -36,6 +37,7 @@ type Props<T extends { id: string }, U> = {
   data: T[];
   columns: ColumnDef<T>[];
   searchKeys: (keyof T)[];
+  notActions?: boolean;
   emptyForm: U;
   renderForm: (
     data: U,
@@ -59,6 +61,7 @@ export function CrudPage<T extends { id: string }, U>({
   columns,
   searchKeys,
   emptyForm,
+  notActions,
   renderForm,
   renderAction,
   onAdd,
@@ -158,7 +161,12 @@ export function CrudPage<T extends { id: string }, U>({
                     {c.label}
                   </TableHead>
                 ))}
-                <TableHead className="text-right">Acciones</TableHead>
+
+                {
+                  notActions === true ? (null) : (
+                    <TableHead className="text-right">Acciones</TableHead>
+                  )
+                }
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -176,31 +184,35 @@ export function CrudPage<T extends { id: string }, U>({
                   <TableRow key={row.id}>
                     {columns.map((c) => (
                       <TableCell key={String(c.key)} className={c.className}>
-                        {c.render ? c.render(row) : String(row[c.key as keyof T] ?? "")}
+                        {c.render ? c.render(row) : String(getNestedValue(row, String(c.key)) ?? "")}
                       </TableCell>
                     ))}
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => openEdit(row)}
-                          aria-label="Editar"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => { setDeleteId(row.id); }}
-                          aria-label="Eliminar"
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                        {renderAction && renderAction(row, (config) => setCustomAction(config))}
-                      </div>
-                    </TableCell>
+
+                    {
+                      notActions === true ? (null) : (<TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => openEdit(row)}
+                            aria-label="Editar"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => { setDeleteId(row.id); }}
+                            aria-label="Eliminar"
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                          {renderAction && renderAction(row, (config) => setCustomAction(config))}
+                        </div>
+                      </TableCell>)
+                    }
+
                   </TableRow>
                 ))
               )}
