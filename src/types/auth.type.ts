@@ -6,6 +6,7 @@ export interface User {
     user: string;
     correo: string;
     celular: string;
+    cedula: string;
     roles: UserRoles;
     municipio: string;
     departamento: string;

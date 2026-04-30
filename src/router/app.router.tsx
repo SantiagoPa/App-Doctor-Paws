@@ -12,13 +12,16 @@ const DashboardPageLazy = lazy(() => import('@/modules/users/DashboardPage'));
 const PetsPageLazy = lazy(() => import('@/modules/users/PetsPage'));
 const LayoutPetsLazy = lazy(() => import('@/modules/users/views/pets/layout/LayoutPets'));
 const PetPageLazy = lazy(() => import('@/modules/users/views/pets/PetPage'));
+const PlanesPageLazy = lazy(() => import('@/modules/users/PlanesPage'));
+const PlanPagetLazy = lazy(() => import('@/modules/users/views/plan/PlanPage'));
+const PlanLayoutLazy = lazy(() => import('@/modules/users/views/plan/layaout/PlanLayout'));
+const PaymentSuccessPageLazy = lazy(() => import('@/modules/users/views/plan/PaymentSuccess'));
 const ChatPageLazy = lazy(() => import('@/modules/users/ChatPage'));
 
 // ADMIN
 const LayoutAdminLazy = lazy(() => import('@/components/custom/AdminLayout'));
 const DashboardAdminLazy = lazy(() => import('@/modules/dashboard/DashboardAdmin'));
 const UserPageLazy = lazy(() => import('@/modules/dashboard/UserPage'));
-const PlanesPageLazy = lazy(() => import('@/modules/dashboard/PlanesPage'));
 const SuscripcionesPageLazy = lazy(() => import('@/modules/dashboard/SuscripcionesPage'));
 const SuscripcionesVetPageLazy = lazy(() => import('@/modules/dashboard/SuscripcionesVetPage'));
 const VeterinariasPageLazy = lazy(() => import('@/modules/dashboard/VeterinariasPage'));
@@ -88,6 +91,24 @@ export const appRouter = createBrowserRouter([
                     {
                         path: ":id",
                         element: <PetPageLazy />
+                    }
+                ]
+            },
+            {
+                path: "planes",
+                element: <PlanLayoutLazy />,
+                children: [
+                    {
+                        index: true,
+                        element: <PlanesPageLazy />
+                    },
+                    {
+                        path: "payment/success",
+                        element:<PaymentSuccessPageLazy/>
+                    },
+                    {
+                        path: ":idPlan/payment/:idPayment",
+                        element: <PlanPagetLazy />
                     }
                 ]
             },

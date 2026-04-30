@@ -40,7 +40,7 @@ const ChatPage = () => {
             <NotPetsInfo />
         );
     }
-    
+
     return (
         <LayoutLoader isLoading={isLoading}>
             <div className="py-6 mx-5 lg:py-8 flex flex-col justify-center">
@@ -48,7 +48,7 @@ const ChatPage = () => {
                 <HeaderChat selectedPet={selectedPet} pets={pets} onSelectPet={onSelectPet} />
 
                 {/* Chat area */}
-                <div className="bg-card rounded-xl shadow-card border border-border/50 overflow-hidden flex flex-col h-[calc(100vh-22rem)] min-h-112.5">
+                <div className="bg-card rounded-xl shadow-card border border-border/50 overflow-hidden flex flex-col h-[calc(100vh-22rem)] lg:h-[calc(120vh-22rem)] min-h-112.5">
                     <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
                         {!messages || messages?.length === 0 ? (
                             <div className="h-full flex flex-col items-center justify-center text-center">
@@ -128,7 +128,7 @@ const ChatPage = () => {
                                 className="rounded-2xl h-12 bg-background"
                                 disabled={loading}
                             />
-                            <Button type="submit" size="icon" className="h-12 w-12 shrink-0" disabled={loading || (!input.trim() )}>
+                            <Button type="submit" size="icon" className="h-12 w-12 shrink-0" disabled={loading || (!input.trim())}>
                                 <Send className="w-5 h-5" />
                             </Button>
                         </form>

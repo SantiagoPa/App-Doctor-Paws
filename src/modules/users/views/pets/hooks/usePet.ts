@@ -38,7 +38,7 @@ export const usePet = (id: string) => {
       queryClinet.invalidateQueries({ queryKey: ['pets'] });
       queryClinet.invalidateQueries({ queryKey: ['pet', { id: pet.id }] });
       // actualizar pet
-      queryClinet.setQueryData<Pet[]>(['pets'], (prev)=> prev?.filter((item) => item.id !== id) );
+      queryClinet.setQueryData<Pet[]>(['pets'], (prev) => prev?.filter((item) => item.id !== id));
       toast.success(`¡Tu mascota ${pet.nombre} fue eliminada correctamente! 🎉`);
     }
   })
