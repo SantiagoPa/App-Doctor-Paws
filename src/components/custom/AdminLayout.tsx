@@ -24,9 +24,9 @@ import {
   LogOut,
   Stethoscope,
 } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 
 const items = [
   { title: "Resumen", url: "/admin", icon: LayoutDashboard, end: true },
@@ -92,7 +92,7 @@ const AdminSidebar = () => {
 };
 
 const AdminLayout = () => {
-  const { user, logout } = useAuth();
+  const {  user } = useAuthStore()
   const nav = useNavigate();
 
   return (
@@ -112,15 +112,14 @@ const AdminLayout = () => {
               {user && (
                 <div className="hidden sm:block text-right">
                   <p className="text-xs text-muted-foreground">Administrador</p>
-                  <p className="text-sm font-semibold capitalize">{user.name}</p>
+                  <p className="text-sm font-semibold capitalize">{user.nombre_completo}</p>
                 </div>
               )}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  logout();
-                  nav("/");
+                  nav("/app");
                 }}
               >
                 <LogOut className="w-4 h-4" />
