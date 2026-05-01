@@ -57,8 +57,8 @@ const PlanPage = () => {
                                 <div className="flex items-center gap-4 mb-6">
 
                                     <div>
-                                        <p className="font-display font-bold text-xl">Plan {plan?.nombre}</p>
-                                        <p className="text-sm text-muted-foreground">Renovación en {plan?.duracion_dias}</p>
+                                        <p className="font-display font-bold text-xl">{plan?.nombre}</p>
+                                        <p className="text-sm text-muted-foreground">Renovación en {plan?.duracion_dias} Dias</p>
                                     </div>
                                 </div>
 
@@ -70,7 +70,7 @@ const PlanPage = () => {
                                         <dt className="text-muted-foreground">Subtotal</dt>
                                         <dd>{formatCurrency(Number(plan?.precio_cop))}</dd>
                                     </div>
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-between text-success">
                                         <dt className="text-muted-foreground">Impuestos (0%)</dt>
                                         <dd>$0</dd>
                                     </div>

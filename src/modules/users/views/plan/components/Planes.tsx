@@ -52,6 +52,7 @@ export const Planes = () => {
                     bg: "bg-gradient-primary",
                     iconColor: "text-primary-foreground",
                     features: [
+                        "Todo lo del Plan Gratis",
                         "Hasta 6 mascotas",
                         "Consultas IA ilimitadas",
                         "Alertas epidemiológicas",
@@ -73,7 +74,7 @@ export const Planes = () => {
                     iconColor: "text-secondary-foreground",
                     features: [
                         "Todo lo del plan Mensual",
-                        "2 meses gratis",
+                        "Ahorra 2 meses",
                         "Mascotas ilimitadas",
                         // "Reportes mensuales PDF",
                         // "Atención VIP veterinaria",

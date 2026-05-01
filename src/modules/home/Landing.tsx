@@ -137,7 +137,7 @@ const Landing = () => {
               {
                 icon: Stethoscope,
                 title: "Síntomas claros",
-                desc: "Describe lo que ves: vómito, decaimiento, no come… La IA hace preguntas específicas.",
+                desc: "Describe lo que ves: vómito, fiebre, sangre, no come… La IA hace preguntas específicas.",
                 bg: "bg-gradient-sky",
                 color: "text-primary-deep",
               },
@@ -151,7 +151,7 @@ const Landing = () => {
               {
                 icon: Clock,
                 title: "Disponible 24/7",
-                desc: "A las 3 a.m. tu mascota no se siente bien. Estamos aquí para orientarte.",
+                desc: "Son las 3 a.m. y tu mascota no se siente bien. Estamos aquí para orientarte.",
                 bg: "bg-gradient-peach",
                 color: "text-secondary-foreground",
               },

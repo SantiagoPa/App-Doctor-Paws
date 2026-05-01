@@ -163,7 +163,7 @@ export const FormPayment = ({ plan, user, onSetDataContact }: Props) => {
                                             }
                                         )
                                     } />
-                                    Region
+                                    Region/Departamento
                                 </FieldLabel>
                                 <Input
                                     {...field}

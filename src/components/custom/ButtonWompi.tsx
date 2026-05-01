@@ -36,7 +36,7 @@ export const ButtonWompi = ({ amountInCents, payment, user, contact }: Props) =>
         script.setAttribute('data-amount-in-cents', String(amountInCents));
         script.setAttribute('data-reference', payment.referencia);
         script.setAttribute('data-signature:integrity', payment.firma_integridad);
-        script.setAttribute('data-redirect-url', payment.redirect_url);
+        // script.setAttribute('data-redirect-url', payment.redirect_url);
         script.setAttribute('data-expiration-time', payment.expiration_time);
 
         script.setAttribute('data-customer-data:email', user.correo);
@@ -53,13 +53,6 @@ export const ButtonWompi = ({ amountInCents, payment, user, contact }: Props) =>
         script.setAttribute('data-shipping-address:city', user.municipio);
         script.setAttribute('data-shipping-address:phone-number', user.celular);
 
-        // data - shipping - address: address - line - 1="Carrera 123 # 4-5"
-        // data - shipping - address: address - line - 2="apto 123"
-        // data - shipping - address: country = "CO"
-        // data - shipping - address: city = "Bogota"
-        // data - shipping - address: phone - number="3019988888"
-        // data - shipping - address: region = "Cundinamarca"
-        // data - shipping - address: name = "Pedro Perez"
         script.async = true;
 
         formRef.current.appendChild(script);
