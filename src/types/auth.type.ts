@@ -17,6 +17,8 @@ export interface User {
     sexo: UserSexo;
     acepta_terminos: boolean;
     version_terminos: string;
+    suscription: Suscription;
+
 }
 
 export interface LoginUser {
@@ -36,7 +38,7 @@ export interface LoginUser {
     acepta_terminos: boolean;
     version_terminos: string;
     access_token: string;
-    suscription: Suscription
+    suscription: Suscription;
 }
 
 

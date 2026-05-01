@@ -40,7 +40,7 @@ export const useChat = ({ pets, queries, query, mutationCreateQuery }: Props) =>
                 "resolucion": "PENDIENTE",
                 "usuario_id": user.id,
                 "mascota_id": pet.id,
-                "suscripcion_id": user.suscription.id,
+                "suscripcion_id": user?.suscription?.id,
                 id: "new"
             });
         }
