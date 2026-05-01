@@ -57,7 +57,7 @@ export const PublicPrivateInterceptor = () => {
                 toast.warning("Se ha cancela la peticion");
             }
             if (error.code === "ERR_NETWORK") {
-                toast.error("Error Network - error de conexion");
+                toast.error(`Error Network - error de conexion: ${error}`);
             }
             if (error.code === "ERR_CONNECTION_REFUSED") {
                 toast.error("Error conexion rechazada - error de conexion");
