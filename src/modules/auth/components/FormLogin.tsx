@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Lock, Mail, Stethoscope } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import * as z from 'zod';
 import { useAuthStore } from '../store/auth.store';
 import { useApiCall } from '@/hooks/useApiCall';
@@ -23,7 +23,6 @@ const formSchema = z.object({
 
 export const FormLogin = () => {
 
-    const navigate = useNavigate();
     const { login } = useAuthStore();
     const { callEndpoint, isLoading } = useApiCall();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -40,8 +39,8 @@ export const FormLogin = () => {
         if (status === 201 && result) {
             const { access_token, ...user } = result;
             login({ token: access_token, user });
+            console.log("navigate: app");
             toast.success("¡Bienvenido de vuelta! 🐾");
-            navigate("/app");
         }
     }
 

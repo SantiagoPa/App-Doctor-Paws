@@ -4,9 +4,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-quer
 import { Toaster } from "@/components/ui/sonner"
 
 import { appRouter } from './router/app.router';
-import { AuthProvider } from './context/AuthContext';
 import { TooltipProvider } from './components/ui/tooltip';
-import { AdminProvider } from './context/AdminContext';
 import type { PropsWithChildren } from 'react';
 import { LayoutLoader } from './components/custom/Loader';
 import { useAuthStore } from './modules/auth/store/auth.store';
@@ -38,15 +36,9 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster richColors position='top-center' />
       <TooltipProvider>
-        <AuthProvider>
-          <AdminProvider>
-
             <CheckAuthProvider>
               <RouterProvider router={appRouter} />
             </CheckAuthProvider>
-
-          </AdminProvider>
-        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
 

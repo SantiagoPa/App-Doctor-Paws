@@ -35,7 +35,9 @@ export const appRouter = createBrowserRouter([
     // Main routes
     {
         path: '/',
-        element: <Layout />,
+        element: (
+            <Layout />
+        ),
         children: [
             {
                 index: true,
@@ -105,7 +107,7 @@ export const appRouter = createBrowserRouter([
                     },
                     {
                         path: "payment/success",
-                        element:<PaymentSuccessPageLazy/>
+                        element: <PaymentSuccessPageLazy />
                     },
                     {
                         path: ":idPlan/payment/:idPayment",

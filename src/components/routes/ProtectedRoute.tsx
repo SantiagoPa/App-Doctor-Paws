@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 export const AuthenticatedRoute = ({ children }: PropsWithChildren) => {
     const { status } = useAuthStore();
 
-    if (status === "authenticathing") return null;
+    // if (status === "authenticathing") return null;
 
     if (status === "not-authenticated") return <Navigate to={"/auth/login"} />
 
@@ -18,7 +18,7 @@ export const NotAuthenticatedRoute = ({ children }: PropsWithChildren) => {
 
     if (status === "authenticathing") return null;
 
-    if (status === "authenticated") return <Navigate to={"/"} />
+    if (status === "authenticated") return <Navigate to={"/app"} />
 
     return children;
 }
